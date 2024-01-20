@@ -38,6 +38,15 @@ resource "aws_instance" "main" {
     subnet_id = var.subnets[0]
     tags = merge(var.tags, {Name = local.name})
 
+  root_block_device {
+
+      volume_size = 10
+      encrypted = true
+      kms_key_id = var.kms
+      delete_on_termination = true
+    
+  }
+
     user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
     env = var.env
   }))
